@@ -38,9 +38,9 @@ class Hangman:
         status = ""
         letter = letter.lower()
         if letter in self.guessed_letters:
-            status = "This letter is already guessed. Please try another letter: "
+            raise ValueError("This letter is already guessed. Please try another letter.")
         elif letter not in self.allowed_characters:
-            status = "This is not a valid letter. Please try again: "
+            raise ValueError("This is not a valid letter. Please try again.")
         else:
             self.guessed_letters.append(letter)
             if letter in self.secret_word:
@@ -64,7 +64,12 @@ class Hangman:
             print(HANG_GRAPHICS[self.graphics_counter])
             letter = self.prompt_input(status)
             clear()
-            status = self.letter_input(letter)
+            try:
+                status = self.letter_input(letter)
+            except ValueError as e:
+                print(e)
+                status = "Please guess a letter: "
+                continue
         print(HANG_GRAPHICS[self.graphics_counter])
         if self.won:
             print("Congratulations - you won!")
