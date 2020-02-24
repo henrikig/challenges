@@ -14,8 +14,7 @@ WINNING_COMBINATIONS = (
 ROWS = ((0,),) + WINNING_COMBINATIONS[0:3]
 HORIZONTAL = "-----------------------"
 VERTICAL = "   {}   |   {}   |   {}   "
-P1 = "X"
-P2 = "O"
+PLAYERS = ["X", "O"]
 
 class TicToe:
     """A Game of TicTacToe with some simple AI implemented"""
@@ -25,10 +24,12 @@ class TicToe:
         self.player = 0
 
     def __str__(self):
+        # Clear screen
         if name == "nt":
             _ = system('cls')
         else:
             _ = system('clear')
+        # Representation of game as string
         s = ""
         s += "DIFFICULTY: " + self.difficulty.upper() + "\n\n"
         for i in range(0, 3):
@@ -38,6 +39,7 @@ class TicToe:
             s += HORIZONTAL + "\n" if i != 2 else ""
         return s
 
+    # Check if any of the combinations from the winning combinations are fulfilled
     @property
     def is_win(self):
         for combination in WINNING_COMBINATIONS:
@@ -46,6 +48,7 @@ class TicToe:
                     return self.board[combination[0]]
         return False
 
+    # Check if the game is either a win or the board is full
     @property
     def game_over(self):
         if self.is_win:
@@ -70,18 +73,18 @@ class TicToe:
             print(e.message)
             return False
         else:
-            self.board[location] = [P1, P2][self.player]
+            self.board[location] = PLAYERS[self.player]
             self.player = 1 - self.player
             return location
 
     # Ask player for move until integer between 1 through 9 is given
     def player_move(self):
         location = None
-        while location not in range(1, 10):
+        while location not in VALID_RANGE:
             try:
                 location = int(input("Please pick a move between numbers 1 through 9: "))
             except ValueError:
-                print("This is not a number between 1 through 9.")
+                print("This is not a number between numbers 1 through 9.")
         return self.move(int(location))
 
     # Random computer move
@@ -93,21 +96,21 @@ class TicToe:
     def play(self):
         # Draw random who is player 1 and player 2
         choice = random.choice([0, 1])
-        computer, player = [P1, P2][choice], [P1, P2][1 - choice]
+        computer, player = PLAYERS[choice], PLAYERS[1 - choice]
         print(self)
         # Run while game is not yet over
         while not self.game_over:
-            if computer == [P1, P2][self.player]:
+            if computer == PLAYERS[self.player]:
                 self.computer_move()
                 print(self)
             else:
-                self.player_move()
-                print(self)
-                if not self.is_win:
-                    print("Computer is thinking...")
-                    sleep(2)
+                if self.player_move():
+                    print(self)
+                    if not self.is_win:
+                        print("Computer is thinking...")
+                        sleep(2)
         # Determine who has won if any
-        if self.is_win and player != [P1, P2][self.player]:
+        if self.is_win and player != PLAYERS[self.player]:
             print("Congratulations - you won against the computer.")
         elif self.is_win:
             print("Too bad - the computer beat you.")
