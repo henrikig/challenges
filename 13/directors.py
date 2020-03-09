@@ -13,7 +13,8 @@ Movie = namedtuple('Movie', 'title year score')
 def get_movies_by_director():
     # Extracts all movies from csv and stores them in a dictionary
     # where keys are directors, and values is a list of movies (named tuples)
-    movie_data = {}  # {'James Cameron': [Movie('TITLE', 'YEAR', 'SCORE')]}
+    movie_data = {}
+
     with open(MOVIE_DATA, newline='') as csv_file:
         reader = csv.DictReader(csv_file)
         for row in reader:
@@ -30,7 +31,9 @@ def get_movies_by_director():
                     movie_data[director] += [movie]
                 else:
                     movie_data[director] = [movie]
-    return movie_data
+
+    # Remove duplicates and return
+    return {k: list(set(v)) for k, v in movie_data.items()}
 
 
 def get_average_scores(directors):
@@ -51,7 +54,7 @@ def print_results(directors):
     # print his/her movies also ordered by highest rated movie.
     # See http://pybit.es/codechallenge13.html for example output
     fmt_director_entry = '{counter}. {director:<52} {avg}'
-    fmt_movie_entry = '{year}] {title:<50} {score}'
+    fmt_movie_entry = '{year}) {title:<50} {score}'
     sep_line = '-' * 60
     directors = {k: v for k, v in sorted(directors.items(), key=lambda item: item[1][-1], reverse=True)}
     directors = dict(itertools.islice(directors.items(), 20))
