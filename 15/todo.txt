@@ -1,0 +1,1 @@
+{"Hey": true, "Hola": true, "Groceries": false, "Noe nytt": true, "Go for a run": false, "Bake a cake": false, "Post mail": false}

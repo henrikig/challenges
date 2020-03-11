@@ -1,7 +1,11 @@
 /* some styles, add/update/delete as you want */
 
-body {
+/*body {
 	text-align: center;
+}*/
+
+h1 {
+	color: dimgray;
 }
 
 .centered {

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<div>
+    <form action="/" method="POST" id="todos">
+        <label>Enter a ToDo</label>
+        <input type="text" name="todo" value="{{ request.form['todo'] }}" />
+        <button type="submit">Go</button>
+    </form>
+    {% for item in todos %}
+        {% if not todos[item] %}
+            <li><em>{{ item }}</em></li>
+                <form action="/" method="POST">
+                    <button type="submit" name="todo" value="{{ item }}">Complete</button>
+                </form>
+        {% endif %}
+    {% endfor %}
+</ul>
+</div>
+</body>
+</html>
